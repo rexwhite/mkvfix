@@ -74,7 +74,7 @@ def process(filename):
         mkvpropedit_options.append(f'--edit')
         mkvpropedit_options.append(f'track:@{track_id}')
         mkvpropedit_options.append(f'--set')
-        mkvpropedit_options.append(f'name=\'{name}\'')
+        mkvpropedit_options.append(f'name={name}')
 
         if props['default_track']:
             mkvpropedit_options.append(f'--set')
@@ -116,7 +116,7 @@ def process(filename):
         mkvpropedit_options.append(f'--edit')
         mkvpropedit_options.append(f'track:@{track_id}')
         mkvpropedit_options.append(f'--set')
-        mkvpropedit_options.append(f'name=\'{name}\'')
+        mkvpropedit_options.append(f'name={name}')
 
         # set preferred track (DTS > DD)
         # duplicate english track may be commentary
@@ -150,8 +150,8 @@ def process(filename):
 
 
 def choose_file():
-    global filename, file_name
-    filename = filedialog.askopenfilename()
+    global filename, entry_filename
+    filename = filedialog.askopenfilename(filetypes=[('mkv files', '.mkv')])
     file_name.configure(state=ACTIVE)
     file_name.delete(0, END)
     file_name.insert(0, filename)
@@ -166,6 +166,7 @@ class ConsoleText(Text):
         self.yview(END)
 
 
+# setup UI...
 root = Tk()
 root.title('MKV Tool')
 root.minsize(800, 450)
@@ -181,16 +182,20 @@ frame_top.pack(expand=False, anchor=W, fill=BOTH, padx=3, pady=3)
 frame_mid = Frame(root, borderwidth=3, relief=RIDGE)
 frame_mid.pack(expand=True, anchor=S, fill=BOTH, padx=4, pady=1)
 
+frame_right = Frame(frame_mid, borderwidth=3, relief=RIDGE)
+frame_right.pack(expand=True, anchor=E, side=RIGHT, fill=BOTH)
+Label(frame_right, text='placeholder').pack(expand=True)
+
 frame_bottom = Frame(root)
 frame_bottom.pack(expand=False, anchor=S, fill=BOTH, padx=3, pady=3)
 
 file_label = Label(frame_top, text='Target file:')
 file_label.pack(side=LEFT)
 
-file_name = Entry(frame_top)
-file_name.insert(0, 'Select a file...')
-file_name.configure(state=DISABLED)
-file_name.pack(expand=True, side=LEFT, fill=X)
+entry_filename = Entry(frame_top)
+entry_filename.insert(0, 'Select a file...')
+entry_filename.configure(state=DISABLED)
+entry_filename.pack(expand=True, side=LEFT, fill=X)
 
 btn_choose = Button(frame_top, text='Choose', command=choose_file)
 btn_choose.pack(side=RIGHT)
@@ -204,4 +209,5 @@ btn_process.pack(side=RIGHT)
 sys.stdout = txt_output
 sys.stderr = txt_output
 
+# Run UI!
 root.mainloop()
