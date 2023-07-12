@@ -35,8 +35,8 @@ def test():
 # root window
 root = Tk()
 root.title('MKV Tool')
-root.minsize(800, 450)
-root.geometry('1000x600+350+150')
+root.minsize(800, 475)
+root.geometry('800x475+350+150')
 root.config(bg='lightgrey')
 root.resizable(True, True)
 
@@ -75,11 +75,30 @@ txt_output = ConsoleText(frame_log, font="Courier 14", height=12)
 txt_output.pack(expand=True, fill=BOTH)
 
 # Tracks treeview
-treeview_tracks = Treeview(frame_tracks)
+treeview_tracks = Treeview(frame_tracks, columns=('forced', 'type', 'name'), selectmode=BROWSE)
+
+# format treeview
+treeview_tracks.column('#0', width=0, stretch=False)
+treeview_tracks.column('type', width=100, stretch=False)
+treeview_tracks.column('forced', width=30, stretch=False, anchor=CENTER)
+treeview_tracks.column('name', width=100, stretch=True)
+
+treeview_tracks.heading('#0', text='?', anchor=W)
+treeview_tracks.heading('type', text='Type', anchor=CENTER)
+treeview_tracks.heading('forced', text='*', anchor=CENTER)
+treeview_tracks.heading('name', text='Name', anchor=W)
+
+# load test data into treeview
+treeview_tracks.insert(parent='', iid='0', index=END, text='', values=('✔︎', 'Audio', 'English 5.0 DTS MA'))
+treeview_tracks.insert(parent='', iid='1', index=END, text='', values=('', 'Audio', 'French 5.0'))
+treeview_tracks.insert(parent='', iid='2', index=END, text='', values=('', 'Audio', 'English Stereo'))
+treeview_tracks.insert(parent='', iid='3', index=END, text='', values=('', 'Commentary', 'Director\'s Commentary'))
+treeview_tracks.insert(parent='', iid='4', index=END, text='', values=('', 'Subtitles', 'English'))
+
 treeview_tracks.pack(expand=True, fill=BOTH)
 
 # Process button
-btn_process = Button(frame_bottom, text='Process', command=test)
+btn_process = Button(frame_bottom, text='Update', command=test)
 btn_process.pack(side=RIGHT)
 
 sys.stdout = txt_output
