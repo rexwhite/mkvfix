@@ -75,25 +75,27 @@ txt_output = ConsoleText(frame_log, font="Courier 14", height=12)
 txt_output.pack(expand=True, fill=BOTH)
 
 # Tracks treeview
-treeview_tracks = Treeview(frame_tracks, columns=('forced', 'type', 'name'), selectmode=BROWSE)
+treeview_tracks = Treeview(frame_tracks, columns=('forced', 'type', 'orig_name', 'new_name'), selectmode=BROWSE)
 
 # format treeview
 treeview_tracks.column('#0', width=0, stretch=False)
 treeview_tracks.column('type', width=100, stretch=False)
 treeview_tracks.column('forced', width=30, stretch=False, anchor=CENTER)
-treeview_tracks.column('name', width=100, stretch=True)
+treeview_tracks.column('orig_name', width=100, stretch=True)
+treeview_tracks.column('new_name', width=100, stretch=True)
 
 treeview_tracks.heading('#0', text='?', anchor=W)
 treeview_tracks.heading('type', text='Type', anchor=CENTER)
 treeview_tracks.heading('forced', text='*', anchor=CENTER)
-treeview_tracks.heading('name', text='Name', anchor=W)
+treeview_tracks.heading('orig_name', text='Original Name', anchor=W)
+treeview_tracks.heading('new_name', text='New Name', anchor=W)
 
 # load test data into treeview
-treeview_tracks.insert(parent='', iid='0', index=END, text='', values=('✔︎', 'Audio', 'English 5.0 DTS MA'))
-treeview_tracks.insert(parent='', iid='1', index=END, text='', values=('', 'Audio', 'French 5.0'))
-treeview_tracks.insert(parent='', iid='2', index=END, text='', values=('', 'Audio', 'English Stereo'))
-treeview_tracks.insert(parent='', iid='3', index=END, text='', values=('', 'Commentary', 'Director\'s Commentary'))
-treeview_tracks.insert(parent='', iid='4', index=END, text='', values=('', 'Subtitles', 'English'))
+treeview_tracks.insert(parent='', iid='0', index=END, text='', values=('✔︎', 'Audio', 'English 5.0', 'English 5.0 DTS MA'))
+treeview_tracks.insert(parent='', iid='1', index=END, text='', values=('', 'Audio', 'French 5.0', 'French 5.0'))
+treeview_tracks.insert(parent='', iid='2', index=END, text='', values=('', 'Audio', 'Stereo', 'English Stereo'))
+treeview_tracks.insert(parent='', iid='3', index=END, text='', values=('', 'Commentary', 'English', 'Director\'s Commentary'))
+treeview_tracks.insert(parent='', iid='4', index=END, text='', values=('', 'Subtitles', '', 'English'))
 
 treeview_tracks.pack(expand=True, fill=BOTH)
 
