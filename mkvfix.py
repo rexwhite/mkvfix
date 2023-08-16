@@ -248,8 +248,8 @@ class TrackView(Treeview):
                 overlay.select_range(0, END)
                 overlay.focus()
 
-                overlay.bind('<FocusOut>', self.on_focus_out_name)
-                overlay.bind('<Return>', self.on_return_name)
+                overlay.bind('<FocusOut>', self.save_value)
+                overlay.bind('<Return>', self.save_value)
 
                 overlay.target_iid = row
                 overlay.target_col = col_index
@@ -257,10 +257,7 @@ class TrackView(Treeview):
 
                 overlay.place(x=x, y=y, width=w, height=h)
 
-    def on_focus_out_name(self, event):
-        event.widget.destroy()
-
-    def on_return_name(self, event):
+    def save_value(self, event):
         global tracks
         widget = event.widget
 
