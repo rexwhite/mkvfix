@@ -4,6 +4,7 @@ import subprocess
 import json
 import langcodes
 import sys
+import re
 
 from tkinter import *
 from tkinter.ttk import *
@@ -170,11 +171,11 @@ def save(filename, tracks):
         args.extend(['--edit', f'track:@{props["number"]}'])
 
         if track['type'] == 'audio':
-            args.extend(['--set', f'name=\'{props["new_name"]}\''])
+            args.extend(['--set', f'name={props["new_name"]}'])
             args.extend(['--set', f'flag-default={props["default_track"]}'])
 
         elif track['type'] == 'subtitles':
-            args.extend(['--set', f'name=\'{props["new_name"]}\''])
+            args.extend(['--set', f'name={props["new_name"]}'])
             args.extend(['--set', f'flag-default={props["default_track"]}'])
             args.extend(['--set', f'flag-forced={props["forced_track"]}'])
 
