@@ -5,7 +5,7 @@ A GUI application for editing MKV file metadata (audio and subtitle track names 
 ## Prerequisites
 
 ### System Dependencies
-- Python 3.x
+- Python 3.9+
 - [MKVToolNix](https://mkvtoolnix.download/) - Provides `mkvmerge` and `mkvpropedit` command-line tools
 
 ### Linux Only
@@ -16,6 +16,25 @@ sudo yum install python3-tkinter  # RHEL/Fedora
 ```
 
 ## Setup
+
+### Using Poetry (Recommended)
+
+1. Install Poetry:
+   ```bash
+   pip install poetry
+   ```
+
+2. Install dependencies:
+   ```bash
+   poetry install
+   ```
+
+3. Run the application:
+   ```bash
+   poetry run python mkvfix.py
+   ```
+
+### Using venv (Alternative)
 
 1. Create a virtual environment:
    ```bash
@@ -33,16 +52,21 @@ sudo yum install python3-tkinter  # RHEL/Fedora
    pip install -r requirements.txt
    ```
 
-## Running the Application
-
-```bash
-source venv/bin/activate  # If not already activated
-python mkvfix.py
-```
+4. Run the application:
+   ```bash
+   python mkvfix.py
+   ```
 
 ## Building a Standalone Executable
 
 ### Basic Executable
+
+Using Poetry:
+```bash
+poetry run pyinstaller mkvfix.py
+```
+
+Or using venv:
 ```bash
 source venv/bin/activate
 pyinstaller mkvfix.py
@@ -53,6 +77,12 @@ The executable will be created in the `dist/` directory.
 ### macOS Application Bundle
 To create a proper macOS `.app` bundle:
 
+Using Poetry:
+```bash
+poetry run pyinstaller --windowed --name="MKV Tool" mkvfix.py
+```
+
+Or using venv:
 ```bash
 source venv/bin/activate
 pyinstaller --windowed --name="MKV Tool" mkvfix.py
@@ -63,6 +93,13 @@ This creates `MKV Tool.app` in the `dist/` directory that can be dragged to Appl
 ### macOS DMG Installer
 To create a distributable `.dmg` installer:
 
+Using Poetry:
+```bash
+poetry run pyinstaller --windowed --name="MKV Tool" mkvfix.py
+poetry run dmgbuild -s dmgbuild_settings.py "MKV Tool" dist/MKVTool.dmg
+```
+
+Or using venv:
 ```bash
 source venv/bin/activate
 pyinstaller --windowed --name="MKV Tool" mkvfix.py

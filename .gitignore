@@ -7,3 +7,6 @@ build
 *.mkv
 venv
 .python-version
+
+# Poetry
+poetry.lock

@@ -1,0 +1,19 @@
+[project]
+name = "mkvfix"
+version = "0.1.0"
+description = "A GUI application for editing MKV file metadata"
+authors = [
+    {name = "sparky"}
+]
+readme = "README.md"
+requires-python = "^3.9"
+dependencies = [
+    "langcodes (>=3.5.1,<4.0.0)",
+    "pyinstaller (>=6.19.0,<7.0.0)",
+    "dmgbuild (>=1.6.7,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
