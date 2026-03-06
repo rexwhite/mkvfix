@@ -59,51 +59,50 @@ sudo yum install python3-tkinter  # RHEL/Fedora
 
 ## Building a Standalone Executable
 
-### Basic Executable
-
-Using Poetry:
-```bash
-poetry run pyinstaller mkvfix.py
-```
-
-Or using venv:
-```bash
-source venv/bin/activate
-pyinstaller mkvfix.py
-```
-
-The executable will be created in the `dist/` directory.
+The project includes a `mkvfix.spec` file for consistent builds.
 
 ### macOS Application Bundle
-To create a proper macOS `.app` bundle:
 
 Using Poetry:
 ```bash
-poetry run pyinstaller --windowed --name="MKV Tool" mkvfix.py
+poetry run pyinstaller mkvfix.spec
 ```
 
 Or using venv:
 ```bash
 source venv/bin/activate
-pyinstaller --windowed --name="MKV Tool" mkvfix.py
+pyinstaller mkvfix.spec
 ```
 
-This creates `MKV Tool.app` in the `dist/` directory that can be dragged to Applications.
+This creates `mkvfix.app` in the `dist/` directory that can be dragged to Applications.
 
-### macOS DMG Installer
-To create a distributable `.dmg` installer:
+### macOS DMG Installer (Requires Python 3.10+)
+
+First, install the optional dmg dependency:
 
 Using Poetry:
 ```bash
-poetry run pyinstaller --windowed --name="MKV Tool" mkvfix.py
-poetry run dmgbuild -s dmgbuild_settings.py "MKV Tool" dist/MKVTool.dmg
+poetry install --extras dmg
+```
+
+Or using venv:
+```bash
+pip install dmgbuild
+```
+
+Then build:
+
+Using Poetry:
+```bash
+poetry run pyinstaller mkvfix.spec
+poetry run dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
 ```
 
 Or using venv:
 ```bash
 source venv/bin/activate
-pyinstaller --windowed --name="MKV Tool" mkvfix.py
-dmgbuild -s dmgbuild_settings.py "MKV Tool" dist/MKVTool.dmg
+pyinstaller mkvfix.spec
+dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
 ```
 
 The DMG file will be created in the `dist/` directory with a drag-to-Applications installer interface.
