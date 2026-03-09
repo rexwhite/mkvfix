@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
+import sys
 import subprocess
 import json
 import langcodes
-import sys
-import re
 
 from tkinter import *
 from tkinter.ttk import *
@@ -288,6 +287,10 @@ root.geometry('800x475+350+150')
 root.config(bg='lightgrey')
 root.resizable(True, True)
 
+style = Style(root)
+style.theme_use('classic')
+style.configure('TFrame', background='lightgrey')
+
 # frames
 frame_top = Frame(root)
 frame_top.pack(expand=False, anchor=N, fill=BOTH, padx=3, pady=3)
@@ -319,7 +322,7 @@ btn_choose = Button(frame_top, text='Choose', command=choose_file)
 btn_choose.pack(side=RIGHT)
 
 # console output
-txt_output = ConsoleText(frame_log, font="Courier 14", height=12)
+txt_output = ConsoleText(frame_log, font="Courier 14", height=12, bg='white', fg='black')
 txt_output.pack(expand=True, fill=BOTH)
 
 # Tracks treeview

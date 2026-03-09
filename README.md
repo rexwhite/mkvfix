@@ -2,11 +2,16 @@
 
 A GUI application for editing MKV file metadata (audio and subtitle track names and flags).
 
+This is really just a UI, implemented as a tkinter wrapper around TCL/TK, that calls `mkvpropedit` 
+to edit audio track and subtitle metadata in MKV files.
+
 ## Prerequisites
 
 ### System Dependencies
-- Python 3.9+
+- Python 3.11+ (recommended for macOS compatibility)
+  - On macOS: `brew install python@3.11 python-tk@3.11`
 - [MKVToolNix](https://mkvtoolnix.download/) - Provides `mkvmerge` and `mkvpropedit` command-line tools
+  - On macOS: `brew install mkvtoolnix`
 
 ### Linux Only
 On Linux systems, you may need to install tkinter separately:
