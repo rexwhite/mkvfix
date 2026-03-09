@@ -293,21 +293,19 @@ style.configure('TFrame', background='lightgrey')
 
 # frames
 frame_top = Frame(root)
-frame_top.pack(expand=False, anchor=N, fill=BOTH, padx=3, pady=3)
+frame_top.pack(expand=False, anchor=N, fill=X, padx=3, pady=3)
+
+frame_bottom = Frame(root)
+frame_bottom.pack(expand=False, anchor=S, fill=X, padx=3, pady=3, side=BOTTOM)
 
 frame_center = Panedwindow(root, orient=VERTICAL)
 frame_center.pack(expand=True, fill=BOTH)
 
 frame_log = Frame(frame_center, borderwidth=5, relief=RIDGE)
 frame_center.add(frame_log)
-# frame_log.pack(expand=True, anchor=N, fill=BOTH)
 
 frame_tracks = Frame(frame_center, borderwidth=2, relief=RIDGE)
 frame_center.add(frame_tracks)
-# frame_tracks.pack(expand=True, anchor=N, fill=BOTH, side=TOP, padx=4, pady=1)
-
-frame_bottom = Frame(root)
-frame_bottom.pack(expand=False, anchor=N, fill=BOTH, padx=3, pady=3)
 
 # file selector
 file_label = Label(frame_top, text='Target file:')
@@ -322,7 +320,7 @@ btn_choose = Button(frame_top, text='Choose', command=choose_file)
 btn_choose.pack(side=RIGHT)
 
 # console output
-txt_output = ConsoleText(frame_log, font="Courier 14", height=12, bg='white', fg='black')
+txt_output = ConsoleText(frame_log, font="Courier 14", height=8, bg='white', fg='black', borderwidth=0, highlightthickness=0)
 txt_output.pack(expand=True, fill=BOTH)
 
 # Tracks treeview
