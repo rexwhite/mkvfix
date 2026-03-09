@@ -186,11 +186,34 @@ def save(filename, tracks):
 
 
 class ConsoleText(Text):
+    """
+    A specialized Text widget for console-like output.
+
+    The ConsoleText class is designed to emulate a console by serving as a
+    read-only widget with functions to append messages and automatically
+    scroll to the bottom. This is beneficial for applications needing
+    logging or status updates within a GUI.
+    """
+
     def __init__(self, master, **kwargs):
+        """
+        Initializes a ConsoleText instance with default configurations.
+
+        Args:
+            master (Tk): The parent widget for this ConsoleText instance.
+            kwargs: Additional keyword arguments for Text widget configuration.
+        """
         super().__init__(master, **kwargs)
         self.configure(state=DISABLED)
 
     def write(self, message):
+        """
+        Writes a message to the text widget while ensuring it remains non-editable
+        and auto-scrolls to the most recent entry.
+
+        Args:
+            message (str): The message to be inserted into the text widget.
+        """
         self.configure(state=NORMAL)
         self.insert(END, message)
         self.configure(state=DISABLED)
