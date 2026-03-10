@@ -20,6 +20,7 @@ from tkinter import filedialog
 # Global variables to store selected file and track information
 filename = ''
 tracks = []
+audio_track_names = ["Director's Commentary", "Commentary", "Isolated Score"]
 
 
 def get_bundled_path(tool_name):
@@ -424,10 +425,17 @@ class TrackView(Treeview):
 
             # Only allow editing column 4 (new_name)
             if col_index == 4:
-                # Create inline ttk.Entry widget for editing
-                overlay = Entry(self)
-                overlay.insert(0, value)
-                overlay.select_range(0, END)
+                track = tracks[row_index]
+                if track['type'] == 'subtitles':
+                    # Create inline ttk.Entry widget for subtitles
+                    overlay = Entry(self)
+                    overlay.insert(0, value)
+                else:
+                    # Create inline ttk.Combobox widget for other tracks (e.g. audio)
+                    overlay = Combobox(self, values=audio_track_names)
+                    overlay.set(value)
+
+                overlay.selection_range(0, END)
                 overlay.focus()
 
                 # Bind events to save on focus loss or Enter key
@@ -493,6 +501,8 @@ style.configure('Treeview', font=('TkDefaultFont', 10), rowheight=20)
 style.configure('Treeview.Heading', font=('TkDefaultFont', 12, 'bold'))
 style.configure('TEntry', font=('TkDefaultFont', 11), insertcolor='black')
 style.map('TEntry', foreground=[('disabled', 'black')], insertcolor=[('focus', 'black')])
+style.configure('TCombobox', font=('TkDefaultFont', 11), insertcolor='black')
+style.map('TCombobox', insertcolor=[('focus', 'black')])
 
 # Create layout frames
 frame_top = Frame(root)
