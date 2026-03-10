@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
+# Fix macOS version detection bug - MUST be first before any imports
 import sys
+import os
+if sys.platform == 'darwin':
+    os.environ['SYSTEM_VERSION_COMPAT'] = '0'
+
 import subprocess
 import json
 import langcodes
+import re
 
 from tkinter import *
 from tkinter.ttk import *
