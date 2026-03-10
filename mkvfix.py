@@ -18,6 +18,10 @@ from tkinter import filedialog
 filename = ''
 tracks = []
 
+# MKVToolNix paths
+MKVMERGE_PATH = '/opt/homebrew/bin/mkvmerge'
+MKVPROPEDIT_PATH = '/opt/homebrew/bin/mkvpropedit'
+
 
 def process(filename):
     S_VOBSUB = {}
@@ -35,7 +39,7 @@ def process(filename):
 
     def load(filename):
         print(f'Loading: {filename}...')
-        results = subprocess.run(["mkvmerge", "-J", f'{filename}'], capture_output=True)
+        results = subprocess.run([MKVMERGE_PATH, "-J", f'{filename}'], capture_output=True)
         data = json.loads(results.stdout)
 
         return data
@@ -83,6 +87,11 @@ def process(filename):
         props = track['properties']
         codec = track["codec"]
         channels = props['audio_channels']
+        original_name = props['track_name'] if 'track_name' in props else ''
+
+        # If original name contains "commentary", keep it
+        if 'commentary' in original_name.lower():
+            return original_name
 
         # rename audio tracks
         lng = props['language']
@@ -98,7 +107,11 @@ def process(filename):
 
         instances = audio_tracks[lng] + 1 if lng in audio_tracks else 1
         audio_tracks[lng] = instances
-        name = langcodes.get(lng).display_name() + channel_str
+
+        # Use shorter name for DTS-HD Master Audio
+        codec_display = 'DTS-HD MA' if codec == 'DTS-HD Master Audio' else codec
+
+        name = langcodes.get(lng).display_name() + ' ' + codec_display + channel_str
         if instances > 1:
             name = f'{name} {instances}'
 
@@ -185,7 +198,7 @@ def save(filename, tracks):
             args.extend(['--set', f'flag-forced={props["forced_track"]}'])
 
     print(f'Saving file: {filename}...')
-    results = subprocess.run(['mkvpropedit'] + args + [filename], capture_output=True)
+    results = subprocess.run([MKVPROPEDIT_PATH] + args + [filename], capture_output=True)
     print(results.stdout.decode('ascii'))
 
     return
@@ -319,6 +332,11 @@ root.resizable(True, True)
 style = Style(root)
 style.theme_use('classic')
 style.configure('TFrame', background='lightgrey')
+style.configure('TLabel', font=('TkDefaultFont', 12))
+style.configure('TButton', font=('TkDefaultFont', 12))
+style.configure('Treeview', font=('TkDefaultFont', 11), rowheight=20)
+style.configure('Treeview.Heading', font=('TkDefaultFont', 12, 'bold'))
+style.map('TEntry', foreground=[('disabled', 'black')])
 
 # frames
 frame_top = Frame(root)
@@ -340,7 +358,7 @@ frame_center.add(frame_tracks)
 file_label = Label(frame_top, text='Target file:')
 file_label.pack(side=LEFT)
 
-entry_filename = Entry(frame_top)
+entry_filename = Entry(frame_top, font=('TkDefaultFont', 11))
 entry_filename.insert(0, 'Select a file...')
 entry_filename.configure(state=DISABLED)
 entry_filename.pack(expand=True, side=LEFT, fill=X)
