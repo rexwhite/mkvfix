@@ -20,7 +20,12 @@ from tkinter import filedialog
 # Global variables to store selected file and track information
 filename = ''
 tracks = []
+
+# predefined audio track names
 audio_track_names = ["Director's Commentary", "Commentary", "Isolated Score"]
+
+# codec abbreviations
+codec_abbreviations = {"DTS-HD Master Audio": "DTS-HD MA"}
 
 
 def get_bundled_path(tool_name):
@@ -194,8 +199,8 @@ def process(filename):
         instances = audio_tracks[lng] + 1 if lng in audio_tracks else 1
         audio_tracks[lng] = instances
 
-        # Use abbreviated name for DTS-HD Master Audio
-        codec_display = 'DTS-HD MA' if codec == 'DTS-HD Master Audio' else codec
+        # Use abbreviated name for codec if available
+        codec_display = codec_abbreviations.get(codec, codec)
 
         # Format: "Language Codec Channels [Instance#]"
         name = langcodes.get(lng).display_name() + ' ' + codec_display + channel_str
@@ -274,15 +279,17 @@ def display_tracks(tracks):
         name = props['track_name'] if 'track_name' in props else ''
         new_name = props['new_name'] if 'new_name' in props else ''
 
+        codec_display = codec_abbreviations.get(codec_id, codec_id)
+
         # Display audio tracks with default_track checkbox
         if track_type == 'audio':
             default = '✔︎' if props['default_track'] else ''
-            treeview_tracks.insert(parent='', iid=track['id'], index=END, text='', values=(default, 'Audio', codec_id, name, new_name))
+            treeview_tracks.insert(parent='', iid=track['id'], index=END, text='', values=(default, 'Audio', codec_display, name, new_name))
 
         # Display subtitle tracks with forced_track checkbox
         elif track_type == 'subtitles':
             default = '✔︎' if props['forced_track'] else ''
-            treeview_tracks.insert(parent='', iid=track['id'], index=END, text='', values=(default, 'Subtitle', codec_id, name, new_name))
+            treeview_tracks.insert(parent='', iid=track['id'], index=END, text='', values=(default, 'Subtitle', codec_display, name, new_name))
 
 
 def save(filename, tracks):
