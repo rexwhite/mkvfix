@@ -18,9 +18,17 @@ from tkinter import filedialog
 filename = ''
 tracks = []
 
-# MKVToolNix paths
-MKVMERGE_PATH = '/opt/homebrew/bin/mkvmerge'
-MKVPROPEDIT_PATH = '/opt/homebrew/bin/mkvpropedit'
+
+def get_bundled_path(tool_name):
+    """Get the path to a bundled MKVToolNix binary, falling back to system PATH."""
+    if getattr(sys, 'frozen', False):
+        # Running in PyInstaller bundle
+        bundle_dir = sys._MEIPASS
+        bundled_path = os.path.join(bundle_dir, 'bin', tool_name)
+        if os.path.exists(bundled_path):
+            return bundled_path
+    # Fall back to homebrew path
+    return f'/opt/homebrew/bin/{tool_name}'
 
 
 def process(filename):
@@ -39,7 +47,8 @@ def process(filename):
 
     def load(filename):
         print(f'Loading: {filename}...')
-        results = subprocess.run([MKVMERGE_PATH, "-J", f'{filename}'], capture_output=True)
+        mkvmerge = get_bundled_path('mkvmerge')
+        results = subprocess.run([mkvmerge, "-J", f'{filename}'], capture_output=True)
         data = json.loads(results.stdout)
 
         return data
@@ -198,7 +207,8 @@ def save(filename, tracks):
             args.extend(['--set', f'flag-forced={props["forced_track"]}'])
 
     print(f'Saving file: {filename}...')
-    results = subprocess.run([MKVPROPEDIT_PATH] + args + [filename], capture_output=True)
+    mkvpropedit = get_bundled_path('mkvpropedit')
+    results = subprocess.run([mkvpropedit] + args + [filename], capture_output=True)
     print(results.stdout.decode('ascii'))
 
     return

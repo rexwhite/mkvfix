@@ -70,14 +70,16 @@ The project includes a `mkvfix.spec` file for consistent builds.
 
 Using Poetry:
 ```bash
-poetry run pyinstaller mkvfix.spec
+poetry run pyinstaller --noconfirm mkvfix.spec
 ```
 
 Or using venv:
 ```bash
 source venv/bin/activate
-pyinstaller mkvfix.spec
+pyinstaller --noconfirm mkvfix.spec
 ```
+
+The `--noconfirm` flag automatically overwrites existing build files without prompting.
 
 This creates `mkvfix.app` in the `dist/` directory that can be dragged to Applications.
 
@@ -99,17 +101,17 @@ Then build:
 
 Using Poetry:
 ```bash
-poetry run pyinstaller mkvfix.spec
+poetry run pyinstaller --noconfirm mkvfix.spec
 poetry run dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
 ```
 
 Or using venv:
 ```bash
 source venv/bin/activate
-pyinstaller mkvfix.spec
+pyinstaller --noconfirm mkvfix.spec
 dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
 ```
 
 The DMG file will be created in the `dist/` directory with a drag-to-Applications installer interface.
 
-**Note:** Users will still need to install MKVToolNix separately (recommended via Homebrew: `brew install mkvtoolnix`).
+**Note:** The app bundle includes mkvmerge and mkvpropedit binaries, so users do not need to install MKVToolNix separately.

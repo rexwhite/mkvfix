@@ -4,7 +4,10 @@
 a = Analysis(
     ['mkvfix.py'],
     pathex=[],
-    binaries=[],
+    binaries=[
+        ('/opt/homebrew/bin/mkvmerge', 'bin'),
+        ('/opt/homebrew/bin/mkvpropedit', 'bin'),
+    ],
     datas=[],
     hiddenimports=['language_data'],
     hookspath=[],
