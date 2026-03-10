@@ -23,7 +23,18 @@ tracks = []
 
 
 def get_bundled_path(tool_name):
-    """Get the path to a bundled MKVToolNix binary, falling back to system PATH."""
+    """
+    Retrieves the absolute path to a bundled MKVToolNix binary.
+
+    Falls back to the system's Homebrew installation path if not running within
+    a PyInstaller bundle.
+
+    Args:
+        tool_name (str): The name of the binary to locate (e.g., 'mkvmerge', 'mkvpropedit').
+
+    Returns:
+        str: The full path to the binary.
+    """
     if getattr(sys, 'frozen', False):
         # Running in PyInstaller bundle
         bundle_dir = sys._MEIPASS
@@ -36,13 +47,13 @@ def get_bundled_path(tool_name):
 
 def process(filename):
     """
-    Processes an MKV file to analyze tracks and generate standardized names.
+    Analyzes an MKV file to identify tracks and generates standardized names.
 
     Args:
-        filename: Path to the MKV file to process
+        filename (str): The full path to the MKV file to process.
 
     Returns:
-        List of track dictionaries with updated properties including new_name
+        list[dict]: A list of track dictionaries, each containing properties and a 'new_name' field.
     """
     # Track counters for subtitle types (VOBSUB vs text-based)
     S_VOBSUB = {}
@@ -52,7 +63,15 @@ def process(filename):
     audio_track_type_count = {}
 
     def load(filename):
-        """Loads MKV file metadata using mkvmerge."""
+        """
+        Loads MKV file metadata as JSON using 'mkvmerge -J'.
+
+        Args:
+            filename (str): The path to the MKV file to load.
+
+        Returns:
+            dict: The JSON-parsed metadata from mkvmerge.
+        """
         print(f'Loading: {filename}...')
         mkvmerge = get_bundled_path('mkvmerge')
         # Use -J flag to get JSON output of file structure
@@ -62,11 +81,29 @@ def process(filename):
         return data
 
     def get_prop(props, item, default=""):
-        """Safely retrieves a property with a default fallback."""
+        """
+        Safely retrieves a property from a dictionary with a default fallback.
+
+        Args:
+            props (dict): The dictionary containing properties.
+            item (str): The key to retrieve.
+            default: The value to return if the key is not found.
+
+        Returns:
+            The property value or the default fallback.
+        """
         return props[item] if item in props else default
 
     def channels_to_str(channels):
-        """Converts channel count to human-readable format (Mono, Stereo, 5.1, etc.)."""
+        """
+        Converts a channel count integer into a human-readable string.
+
+        Args:
+            channels (int): The number of audio channels.
+
+        Returns:
+            str: A formatted string like " Mono", " Stereo", " 5.1", or an empty string for < 1.
+        """
         if channels < 1:
             return ''
 
@@ -82,13 +119,16 @@ def process(filename):
 
     def handle_subtitle_track(track):
         """
-        Generates a standardized name for subtitle tracks based on codec and language.
+        Generates a standardized name for a subtitle track based on its language and codec.
+
+        Initializes counters for different subtitle types (VOBSUB vs text) and
+        increments instance counts per language to handle multiple tracks.
 
         Args:
-            track: Track dictionary containing properties
+            track (dict): The subtitle track dictionary from mkvmerge.
 
         Returns:
-            Standardized track name (e.g., "English", "English 2")
+            str: The generated track name (e.g., "English", "English 2").
         """
         props = track['properties']
         track_id = props['number']
@@ -116,13 +156,16 @@ def process(filename):
 
     def handle_audio_track(track):
         """
-        Generates a standardized name for audio tracks based on language, codec, and channels.
+        Generates a standardized name for an audio track based on its metadata.
+
+        Extracts language, codec, and channel configuration to build a uniform
+        name. Tracks with "commentary" in their name are left as-is.
 
         Args:
-            track: Track dictionary containing properties
+            track (dict): The audio track dictionary from mkvmerge.
 
         Returns:
-            Standardized track name (e.g., "English DTS-HD MA 5.1", "English AC3 Stereo 2")
+            str: The generated track name (e.g., "English DTS-HD MA 5.1").
         """
         props = track['properties']
         codec = track["codec"]
@@ -188,9 +231,9 @@ def process(filename):
 
 def choose_file():
     """
-    Opens file picker dialog, processes selected MKV file, and displays tracks.
+    Opens a file dialog, processes the selected MKV, and refreshes the UI.
 
-    Updates the global filename and tracks variables, then refreshes the UI.
+    Updates the global filename and tracks variables, then populates the track list.
     """
     global entry_filename, filename, tracks
 
@@ -211,10 +254,10 @@ def choose_file():
 
 def display_tracks(tracks):
     """
-    Populates the treeview widget with track information.
+    Populates the Treeview widget with track information from the provided list.
 
     Args:
-        tracks: List of track dictionaries to display
+        tracks (list[dict]): A list of track data to display.
     """
     global treeview_tracks
 
@@ -243,11 +286,11 @@ def display_tracks(tracks):
 
 def save(filename, tracks):
     """
-    Saves track metadata changes back to the MKV file using mkvpropedit.
+    Saves metadata changes back to the MKV file using 'mkvpropedit'.
 
     Args:
-        filename: Path to the MKV file to modify
-        tracks: List of tracks with updated properties
+        filename (str): The path to the MKV file to modify.
+        tracks (list[dict]): The list of tracks with updated properties.
     """
     args = []
 
@@ -427,9 +470,9 @@ class TrackView(Treeview):
         event.widget.destroy()
 
 
-#------------------------------------
-#          Set up UI...
-#------------------------------------
+# ==============================================================================
+# UI Setup and Event Loop
+# ==============================================================================
 
 # Create root window
 root = Tk()
