@@ -424,7 +424,7 @@ class TrackView(Treeview):
 
             # Only allow editing column 4 (new_name)
             if col_index == 4:
-                # Create inline Entry widget for editing
+                # Create inline ttk.Entry widget for editing
                 overlay = Entry(self)
                 overlay.insert(0, value)
                 overlay.select_range(0, END)
@@ -487,10 +487,12 @@ style = Style(root)
 style.theme_use('classic')
 style.configure('TFrame', background='lightgrey')
 style.configure('TLabel', font=('TkDefaultFont', 12))
-style.configure('TButton', font=('TkDefaultFont', 12))
-style.configure('Treeview', font=('TkDefaultFont', 11), rowheight=20)
+style.configure('TButton', font=('TkDefaultFont', 12), background='#007bff', foreground='white', highlightthickness=0)
+style.map('TButton', background=[('active', '#0056b3')], highlightbackground=[('active', '#0056b3')])
+style.configure('Treeview', font=('TkDefaultFont', 10), rowheight=20)
 style.configure('Treeview.Heading', font=('TkDefaultFont', 12, 'bold'))
-style.map('TEntry', foreground=[('disabled', 'black')])
+style.configure('TEntry', font=('TkDefaultFont', 11), insertcolor='black')
+style.map('TEntry', foreground=[('disabled', 'black')], insertcolor=[('focus', 'black')])
 
 # Create layout frames
 frame_top = Frame(root)
@@ -515,7 +517,7 @@ frame_center.add(frame_tracks)
 file_label = Label(frame_top, text='Target file:')
 file_label.pack(side=LEFT)
 
-entry_filename = Entry(frame_top, font=('TkDefaultFont', 11))
+entry_filename = Entry(frame_top)
 entry_filename.insert(0, 'Select a file...')
 entry_filename.configure(state=DISABLED)
 entry_filename.pack(expand=True, side=LEFT, fill=X)
@@ -542,7 +544,7 @@ treeview_tracks.column('new_name', width=100, stretch=True, anchor=W)
 treeview_tracks.heading('#0', text='?', anchor=W)
 treeview_tracks.heading('forced', text='*', anchor=CENTER)
 treeview_tracks.heading('type', text='Type', anchor=CENTER)
-treeview_tracks.heading('codec', text='Codec', anchor=W)
+treeview_tracks.heading('codec', text='Codec / Format', anchor=W)
 treeview_tracks.heading('orig_name', text='Original Name', anchor=W)
 treeview_tracks.heading('new_name', text='New Name', anchor=W)
 
