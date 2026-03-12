@@ -102,6 +102,8 @@ Then build:
 Using Poetry:
 ```bash
 poetry run pyinstaller --noconfirm mkvfix.spec
+```
+```bash
 poetry run dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
 ```
 

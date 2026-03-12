@@ -25,7 +25,11 @@ tracks = []
 audio_track_names = ["Director's Commentary", "Commentary", "Isolated Score"]
 
 # codec abbreviations
-codec_abbreviations = {"DTS-HD Master Audio": "DTS-HD MA"}
+codec_abbreviations = {
+    "DTS-HD Master Audio": "DTS-HD MA",
+    "AC-3": "",
+    "AC-3 Dolby Surround EX": "DD EX"
+}
 
 
 def get_bundled_path(tool_name):
@@ -279,7 +283,7 @@ def display_tracks(tracks):
         name = props['track_name'] if 'track_name' in props else ''
         new_name = props['new_name'] if 'new_name' in props else ''
 
-        codec_display = codec_abbreviations.get(codec_id, codec_id)
+        codec_display = codec_id
 
         # Display audio tracks with default_track checkbox
         if track_type == 'audio':
