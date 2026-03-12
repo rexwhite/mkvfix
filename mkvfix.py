@@ -41,7 +41,7 @@ def get_bundled_path(tool_name):
         bundled_path = os.path.join(bundle_dir, 'bin', tool_name)
         if os.path.exists(bundled_path):
             return bundled_path
-    return f'/opt/local/bin/{tool_name}'
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), 'binaries', tool_name))
 
 def channels_to_str(channels):
     """Converts a channel count integer into a human-readable string."""

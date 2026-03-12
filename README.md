@@ -12,6 +12,7 @@ to edit audio track and subtitle metadata in MKV files.
   - On macOS: `brew install python@3.11 python-tk@3.11`
 - [MKVToolNix](https://mkvtoolnix.download/) - Provides `mkvmerge` and `mkvpropedit` command-line tools
   - On macOS: `brew install mkvtoolnix`
+  - **Note:** The app expects to find `mkvmerge` and `mkvpropedit` in the `binaries` directory.  I separately built ARM versions for Apple Silicon (arm64).
 
 ### Linux Only
 On Linux systems, you may need to install tkinter separately:
@@ -64,9 +65,9 @@ sudo yum install python3-tkinter  # RHEL/Fedora
 
 ## Building a Standalone Executable
 
-The project includes a `mkvfix.spec` file for consistent builds.
+The project includes a `mkvfix.spec` file for consistent builds targeting Apple Silicon (arm64).
 
-### macOS Application Bundle
+### macOS Application Bundle (Apple Silicon)
 
 Using Poetry:
 ```bash
