@@ -1,4 +1,4 @@
-# MKV Tool
+# MKV Fix
 
 A GUI application for editing MKV file metadata (audio and subtitle track names and flags).
 
@@ -81,7 +81,7 @@ pyinstaller --noconfirm mkvfix.spec
 
 The `--noconfirm` flag automatically overwrites existing build files without prompting.
 
-This creates `mkvfix.app` in the `dist/` directory that can be dragged to Applications.
+This creates `MKV Fix.app` in the `dist/` directory that can be dragged to Applications.
 
 ### macOS DMG Installer (Requires Python 3.10+)
 
@@ -104,14 +104,14 @@ Using Poetry:
 poetry run pyinstaller --noconfirm mkvfix.spec
 ```
 ```bash
-poetry run dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
+poetry run dmgbuild -s dmgbuild_settings.py "MKV Fix" dist/mkvfix.dmg
 ```
 
 Or using venv:
 ```bash
 source venv/bin/activate
 pyinstaller --noconfirm mkvfix.spec
-dmgbuild -s dmgbuild_settings.py "mkvfix" dist/mkvfix.dmg
+dmgbuild -s dmgbuild_settings.py "MKV Fix" dist/mkvfix.dmg
 ```
 
 The DMG file will be created in the `dist/` directory with a drag-to-Applications installer interface.

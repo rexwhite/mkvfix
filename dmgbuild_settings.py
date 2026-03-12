@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 
 # Application bundle to package
-application = 'dist/mkvfix.app'
+application = 'dist/MKV Fix.app'
 
 # Volume name
-appname = 'mkvfix'
+appname = 'MKV Fix'
 
 # Format
 format = 'UDBZ'
@@ -20,7 +20,7 @@ symlinks = {
 
 # Icon locations
 icon_locations = {
-    'mkvfix.app': (140, 120),
+    'MKV Fix.app': (140, 120),
     'Applications': (500, 120)
 }
 

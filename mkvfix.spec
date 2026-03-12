@@ -5,8 +5,8 @@ a = Analysis(
     ['mkvfix.py'],
     pathex=[],
     binaries=[
-        ('/opt/homebrew/bin/mkvmerge', 'bin'),
-        ('/opt/homebrew/bin/mkvpropedit', 'bin'),
+        ('/opt/local/bin/mkvmerge', 'bin'),
+        ('/opt/local/bin/mkvpropedit', 'bin'),
     ],
     datas=[],
     hiddenimports=['language_data'],
@@ -24,7 +24,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='mkvfix',
+    name='MKV Fix',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -44,11 +44,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='mkvfix',
+    name='MKV Fix',
 )
 app = BUNDLE(
     coll,
-    name='mkvfix.app',
+    name='MKV Fix.app',
     icon='mkvfix.icns',
     bundle_identifier='com.mkvfix.app',
     info_plist={
