@@ -624,5 +624,21 @@ btn_process.pack(side=RIGHT)
 sys.stdout = txt_output
 sys.stderr = txt_output
 
+# Handle optional command line argument for initial path
+if len(sys.argv) > 1:
+    filename = sys.argv[1]
+    if os.path.exists(filename):
+        # Update filename entry field
+        entry_filename.configure(state=ACTIVE)
+        entry_filename.delete(0, END)
+        entry_filename.insert(0, filename)
+        entry_filename.configure(state=DISABLED)
+
+        # Process file and display tracks in UI
+        tracks = process(filename)
+        display_tracks(tracks)
+    else:
+        print(f"Error: File '{filename}' not found.")
+
 # Start GUI event loop
 root.mainloop()

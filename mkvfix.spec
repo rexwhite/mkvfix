@@ -31,7 +31,7 @@ exe = EXE(
     upx=True,
     console=False,
     disable_windowed_traceback=False,
-    argv_emulation=False,
+    argv_emulation=True,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
@@ -50,5 +50,28 @@ app = BUNDLE(
     coll,
     name='mkvfix.app',
     icon='mkvfix.icns',
-    bundle_identifier=None,
+    bundle_identifier='com.mkvfix.app',
+    info_plist={
+        'CFBundleDocumentTypes': [
+            {
+                'CFBundleTypeName': 'Matroska Video File',
+                'CFBundleTypeRole': 'Editor',
+                'CFBundleTypeIconFile': 'mkvfix.icns',
+                'CFBundleTypeExtensions': ['mkv'],
+                'LSItemContentTypes': ['io.matroska.mkv'],
+                'LSHandlerRank': 'Owner',
+            }
+        ],
+        'UTExportedTypeDeclarations': [
+            {
+                'UTTypeIdentifier': 'io.matroska.mkv',
+                'UTTypeConformsTo': ['public.movie'],
+                'UTTypeDescription': 'Matroska Video File',
+                'UTTypeTagSpecification': {
+                    'public.filename-extension': ['mkv'],
+                    'public.mime-type': ['video/x-matroska']
+                }
+            }
+        ]
+    }
 )
