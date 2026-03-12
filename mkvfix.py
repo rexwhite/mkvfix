@@ -443,6 +443,7 @@ class TrackView(Treeview):
                     overlay.set(value)
 
                 overlay.selection_range(0, END)
+                overlay.icursor(END)
                 overlay.focus()
 
                 # Bind events to save on focus loss or Enter key
@@ -460,6 +461,16 @@ class TrackView(Treeview):
                 # Store active overlay and bind global click tracker to save when clicking outside
                 self.active_overlay = overlay
                 self.root_click_id = self.winfo_toplevel().bind_all('<Button-1>', self.check_save_on_click, add="+")
+
+            # Handle double-click on column 3 (orig_name) to copy to column 4 (new_name)
+            elif col_index == 3:
+                # Update underlying data structure
+                tracks[row_index]['properties']['new_name'] = value
+                
+                # Update treeview display
+                values = list(values)
+                values[4] = value
+                self.item(row, values=values)
 
     def check_save_on_click(self, event):
         """Checks if a click occurred outside the active editor and saves if so."""
