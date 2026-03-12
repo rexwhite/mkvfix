@@ -457,6 +457,31 @@ class TrackView(Treeview):
                 # Position overlay on top of cell
                 overlay.place(x=x, y=y, width=w, height=h)
 
+                # Store active overlay and bind global click tracker to save when clicking outside
+                self.active_overlay = overlay
+                self.root_click_id = self.winfo_toplevel().bind_all('<Button-1>', self.check_save_on_click, add="+")
+
+    def check_save_on_click(self, event):
+        """Checks if a click occurred outside the active editor and saves if so."""
+        if not hasattr(self, 'active_overlay') or not self.active_overlay or not self.active_overlay.winfo_exists():
+            return
+
+        w = event.widget
+        # Check if click is inside the overlay or its children
+        if w == self.active_overlay or str(w).startswith(str(self.active_overlay) + "."):
+            return
+
+        # Check for combobox popdown
+        try:
+            popdown = self.active_overlay.tk.call('ttk::combobox::PopdownWindow', str(self.active_overlay))
+            if w == popdown or str(w).startswith(str(popdown) + "."):
+                return
+        except:
+            pass
+
+        # If we reach here, the click was outside. Save and close.
+        self.save_value(event)
+
     def save_value(self, event):
         """
         Saves edited track name value back to data structure and UI.
@@ -465,7 +490,14 @@ class TrackView(Treeview):
             event: Event from Entry widget containing edited value
         """
         global tracks
-        widget = event.widget
+        
+        # Use active_overlay if available, otherwise use event.widget
+        widget = getattr(self, 'active_overlay', None)
+        if not widget:
+            widget = event.widget
+            
+        if not widget or not widget.winfo_exists():
+            return
 
         # Get edited value and target location
         value = widget.get()
@@ -482,7 +514,13 @@ class TrackView(Treeview):
         tracks[row]['properties']['new_name'] = value
 
         # Remove overlay widget
-        event.widget.destroy()
+        widget.destroy()
+        self.active_overlay = None
+
+        # Unbind global click tracker
+        if hasattr(self, 'root_click_id'):
+            self.winfo_toplevel().unbind_all('<Button-1>')
+            del self.root_click_id
 
 
 # ==============================================================================
