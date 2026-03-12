@@ -22,7 +22,12 @@ filename = ''
 tracks = []
 
 # predefined audio track names
-audio_track_names = ["Director's Commentary", "Commentary", "Isolated Score"]
+audio_track_names = [
+    "Director's Commentary",
+    "Commentary",
+    "Descriptive Audio",
+    "Isolated Score"
+]
 
 # codec abbreviations
 codec_abbreviations = {
@@ -282,7 +287,6 @@ def display_tracks(tracks):
         codec_id = track['codec']
         name = props['track_name'] if 'track_name' in props else ''
         new_name = props['new_name'] if 'new_name' in props else ''
-
         codec_display = codec_id
 
         # Display audio tracks with default_track checkbox
@@ -436,16 +440,9 @@ class TrackView(Treeview):
 
             # Only allow editing column 4 (new_name)
             if col_index == 4:
-                track = tracks[row_index]
-                if track['type'] == 'subtitles':
-                    # Create inline ttk.Entry widget for subtitles
-                    overlay = Entry(self)
-                    overlay.insert(0, value)
-                else:
-                    # Create inline ttk.Combobox widget for other tracks (e.g. audio)
-                    overlay = Combobox(self, values=audio_track_names)
-                    overlay.set(value)
-
+                # Create inline ttk.Combobox widget for editing
+                overlay = Combobox(self, values=audio_track_names)
+                overlay.set(value)
                 overlay.selection_range(0, END)
                 overlay.icursor(END)
                 overlay.focus()
