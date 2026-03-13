@@ -19,9 +19,13 @@ if sys.platform == 'darwin':
 
 AUDIO_TRACK_NAMES = [
     "Director's Commentary",
+    "Writer's Commentary",
+    "Composer's Commentary",
+    "Producer's Commentary",
+    "Additional Commentary",
     "Commentary",
+    "Isolated Score",
     "Descriptive Audio",
-    "Isolated Score"
 ]
 
 CODEC_ABBREVIATIONS = {
