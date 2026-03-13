@@ -17,7 +17,7 @@ if sys.platform == 'darwin':
 # Constants and Configuration
 # ==============================================================================
 
-AUDIO_TRACK_NAMES = [
+TRACK_NAMES = [
     "Director's Commentary",
     "Writer's Commentary",
     "Composer's Commentary",
@@ -114,7 +114,7 @@ class TrackView(Treeview):
 
             if col_idx == 4:  # New Name column
                 x, y, w, h = self.bbox(row_iid, column=col)
-                overlay = Combobox(self, values=AUDIO_TRACK_NAMES)
+                overlay = Combobox(self, values=TRACK_NAMES)
                 overlay.set(value)
                 overlay.selection_range(0, END)
                 overlay.icursor(END)
